@@ -25,7 +25,7 @@ rule fetch:
         odir = pjoin(WD, "{pr_idx}"),
     log: pjoin(WD, "{pr_idx}", "{sra_idx}.log"),
     # conda: "envs/sra.yml"
-    threads: NT
+    threads: NT / 2
     shell:
         """
         fasterq-dump --split-3 --skip-technical --progress --threads 4 --temp {params.odir} --outdir {params.odir} {wildcards.sra_idx} &> {log}
@@ -41,8 +41,8 @@ rule assemble:
         odir=pjoin(WD, "{pr_idx}", "{sra_idx}-shovill"),
     log: pjoin(WD, "{pr_idx}", "{sra_idx}-shovill.log"),
     # conda: "envs/shovill.yml"
-    threads: NT
+    threads: NT / 8
     shell:
         """
-        /usr/bin/time -vo {log}.time shovill --force --outdir {params.odir} --R1 {input.fq1} --R2 {input.fq2} --cpus {threads} &> {log}
+        /usr/bin/time -vo {log}.time shovill --force --outdir {params.odir} --R1 {input.fq1} --R2 {input.fq2} --cpus 6 &> {log}
         """
