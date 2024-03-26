@@ -12,7 +12,7 @@ for line in open(csv):
 
 rule run:
     input:
-        expand(pjoin(WD, "{pr_idx}", "{sra_idx}_shovill", "contigs.fa"),
+        expand(pjoin(WD, "{pr_idx}", "{sra_idx}-shovill", "contigs.fa"),
                sra_idx=DATA.keys(),
 	       pr_idx=DATA.values(),
 	       product=False),
@@ -36,7 +36,7 @@ rule assemble:
         fq1=pjoin(WD, "{pr_idx}", "{sra_idx}_1.fastq"),
         fq2=pjoin(WD, "{pr_idx}", "{sra_idx}_2.fastq"),
     output:
-        pjoin(WD, "{pr_idx}", "{sra_idx}_shovill", "contigs.fa"),
+        pjoin(WD, "{pr_idx}", "{sra_idx}-shovill", "contigs.fa"),
     params:
         odir=pjoin(WD, "{pr_idx}", "{sra_idx}-shovill"),
     log: pjoin(WD, "{pr_idx}", "{sra_idx}-shovill.log"),
