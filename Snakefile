@@ -44,5 +44,5 @@ rule assemble:
     threads: NT
     shell:
         """
-        shovill --outdir {params.odir} --R1 {input.fq1} --R2 {input.fq2} --cpus {threads} &> {log}
+        shovill --force --outdir {params.odir} --R1 {input.fq1} --R2 {input.fq2} --cpus {threads} &> {log}
         """
