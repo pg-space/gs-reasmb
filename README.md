@@ -23,9 +23,9 @@ datasets download genome accession PRJNA30815 --filename PRJNA30815.zip
 # Extract jsonl report
 unzip -p PRJNA30815.zip ncbi_dataset/data/assembly_data_report.jsonl > PRJNA30815.jsonl
 # Extract SRA project ID + remove duplicates (e.g., same assembly from RefSeq and GenBank)
-python3 extract_sra_idx.py PRJNA30815.jsonl | sort -u > PRJNA231221.list
+python3 extract_sra_idx.py PRJNA30815.jsonl | sort -u > PRJNA30815.list
 # Fetch xml metadata using project id (xml files will be downloaded to the provided directory)
-bash map_idx.sh PRJNA231221.list PRJEB6403
+bash map_idx.sh PRJNA30815.list PRJNA30815
 # Summarize information from xml files
 python3 ~/parse_metadatas.py PRJNA30815/ > PRJNA30815.csv
 # Download and assemble samples (one after the other)

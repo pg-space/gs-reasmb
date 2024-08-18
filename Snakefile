@@ -13,9 +13,10 @@ for line in open(csv):
 rule run:
     input:
         expand(pjoin(WD, "{pr_idx}", "{sra_idx}-shovill", "contigs.fa"),
+               zip,
                sra_idx=DATA.keys(),
-	       pr_idx=DATA.values(),
-	       product=False),
+	            pr_idx=DATA.values()
+                ),
 
 rule fetch:
     output:
@@ -25,6 +26,8 @@ rule fetch:
         odir = pjoin(WD, "{pr_idx}"),
     log: pjoin(WD, "{pr_idx}", "{sra_idx}.log"),
     # conda: "envs/sra.yml"
+    resources:
+        limit_space=1,
     threads: NT / 2
     shell:
         """
@@ -41,8 +44,12 @@ rule assemble:
         odir=pjoin(WD, "{pr_idx}", "{sra_idx}-shovill"),
     log: pjoin(WD, "{pr_idx}", "{sra_idx}-shovill.log"),
     # conda: "envs/shovill.yml"
+    priority:
+        100
     threads: NT / 8
     shell:
         """
         /usr/bin/time -vo {log}.time shovill --force --outdir {params.odir} --R1 {input.fq1} --R2 {input.fq2} --cpus 6 &> {log}
+        rm {input.fq1} {input.fq2}
         """
+    
